@@ -1,3 +1,7 @@
+using GymManagement.Application.Interfaces.Repositories;
+using GymManagement.Infrastructure;
+using GymManagement.Infrastructure.DependencyContainers;
+using GymManagement.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,10 +25,15 @@ namespace GymManagement.WebAPI
         {
 
             services.AddControllers();
+
+            services.AddInfrastructureServices();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GymManagement.WebAPI", Version = "v1" });
             });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
