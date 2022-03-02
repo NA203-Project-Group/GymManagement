@@ -9,5 +9,6 @@ namespace GymManagement.Infrastructure.Repositories
         public CampaignRepository(GymManagementDbContext context) : base(context)
         {
         }
+
     }
 }
