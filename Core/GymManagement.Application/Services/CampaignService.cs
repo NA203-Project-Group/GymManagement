@@ -18,8 +18,6 @@ namespace GymManagement.Application.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-
-
         public List<CampaignQueryViewModel> GetAll()
         {
             var campaigns =  _unitOfWork.Campaigns.GetAll();
@@ -42,11 +40,20 @@ namespace GymManagement.Application.Services
             }
             return false;
         }
-
         public bool Update(CampaignCommandViewModel model)
         {
             var campaign = _mapper.Map<Campaign>(model);
             _unitOfWork.Campaigns.Update(campaign);
+            if (_unitOfWork.SaveChanges())
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool Delete(int id)
+        {
+            var campaign = _unitOfWork.Campaigns.GetById(id);
+            _unitOfWork.Campaigns.Delete(campaign);
             if (_unitOfWork.SaveChanges())
             {
                 return true;

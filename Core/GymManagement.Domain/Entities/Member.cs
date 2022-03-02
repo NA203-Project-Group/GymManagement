@@ -1,6 +1,6 @@
 ﻿namespace GymManagement.Domain.Entities
 {
-    public class Member :BaseEntity
+    public class Member : BaseEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

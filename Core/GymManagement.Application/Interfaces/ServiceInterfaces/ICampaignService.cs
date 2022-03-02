@@ -14,5 +14,6 @@ namespace GymManagement.Application.Interfaces.ServiceInterfaces
         CampaignQueryViewModel GetById(int id);
         bool Create(CampaignCommandViewModel model);
         bool Update(CampaignCommandViewModel model);
+        bool Delete(int id);
     }
 }

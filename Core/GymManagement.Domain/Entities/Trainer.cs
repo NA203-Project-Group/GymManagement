@@ -13,8 +13,3 @@ namespace GymManagement.Domain.Entities
         public List<Mission> Missions { get; set; }
     }
 }
-//public class Trainer : Worker
-//{
-//    public List<Member> Members { get; set; }
-
-//}
