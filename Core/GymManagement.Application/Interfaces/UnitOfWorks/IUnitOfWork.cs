@@ -13,7 +13,6 @@ namespace GymManagement.Application.Interfaces.UnitOfWorks
         IMissionRepository Missions { get; }
         ITrainerRepository Trainers { get; }
         IWorkerContractRepository WorkerContracts { get; }
-        IWorkerRepository Workers { get; }
         bool SaveChanges();
     }
 }
