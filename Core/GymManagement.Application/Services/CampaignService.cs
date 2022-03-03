@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using AutoMapper;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
@@ -40,10 +41,17 @@ namespace GymManagement.Application.Services
             }
             return false;
         }
-        public bool Update(CampaignCommandViewModel model)
+        public bool Update(CampaignCommandViewModel model,int id)
         {
-            var campaign = _mapper.Map<Campaign>(model);
-            _unitOfWork.Campaigns.Update(campaign);
+            var campaign =  _unitOfWork.Campaigns.GetById(id);
+            if (campaign is null)
+            {
+                throw new InvalidOperationException("Campaign  not found");
+            }
+
+            var vmModel  = _mapper.Map<Campaign>(model);
+            _unitOfWork.Campaigns.Update(vmModel);
+
             if (_unitOfWork.SaveChanges())
             {
                 return true;
@@ -53,12 +61,20 @@ namespace GymManagement.Application.Services
         public bool Delete(int id)
         {
             var campaign = _unitOfWork.Campaigns.GetById(id);
-            _unitOfWork.Campaigns.Delete(campaign);
+            if (campaign is null)
+            {
+                throw new InvalidOperationException("Campaign  not found");
+            }
+
+            campaign.IsDeleted = true;
+            _unitOfWork.Campaigns.Update(campaign);
+
             if (_unitOfWork.SaveChanges())
             {
                 return true;
             }
             return false;
+
         }
     }
 }

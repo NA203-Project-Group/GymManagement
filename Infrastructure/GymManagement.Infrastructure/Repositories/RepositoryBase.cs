@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using GymManagement.Domain.Entities;
 using GymManagement.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace GymManagement.Infrastructure.Repositories
 {
@@ -30,17 +31,17 @@ namespace GymManagement.Infrastructure.Repositories
 
         public List<T> GetAll()
         {
-            return _dbSet.ToList();
+            return _dbSet.Where(t=>t.IsDeleted == false).ToList();
         }
 
         public List<T> Get(Expression<Func<T, bool>> filter)
         {
-            return _dbSet.Where(filter).ToList();
+            return _dbSet.Where(filter).Where(t=>t.IsDeleted == false).ToList();
         }
 
         public T GetById(int id)
         {
-            return _dbSet.SingleOrDefault( p => p.Id == id);
+            return _dbSet.Where(t=>t.IsDeleted == false).SingleOrDefault( p => p.Id == id);
         }
 
         public void Update(T entity)
