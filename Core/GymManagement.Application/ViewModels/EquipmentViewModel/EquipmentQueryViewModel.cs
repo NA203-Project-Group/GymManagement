@@ -1,14 +1,13 @@
 ﻿using System;
+using GymManagement.Domain.Entities;
 
-namespace GymManagement.Domain.Entities
+namespace GymManagement.Application.ViewModels.EquipmentViewModel
 {
-    public class Equipment :BaseEntity
+    public class EquipmentQueryViewModel
     {
         public string Name { get; set; }
         public DateTime MaintenancePeriod { get; set; }
-        public byte Duration { get; set; }
         public bool IsActive { get; set; }
-        public int TrainerId { get; set; }
         public Trainer Trainer { get; set; }
     }
 }
