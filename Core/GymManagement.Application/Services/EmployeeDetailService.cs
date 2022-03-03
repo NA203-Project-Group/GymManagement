@@ -1,5 +1,4 @@
-﻿using System;
-using GymManagement.Application.Interfaces.ServiceInterfaces;
+﻿using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
 using GymManagement.Domain.Entities;
 
