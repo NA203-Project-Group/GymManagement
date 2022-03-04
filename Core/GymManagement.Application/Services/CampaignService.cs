@@ -34,6 +34,7 @@ namespace GymManagement.Application.Services
         {
             var campaign = _mapper.Map<Campaign>(model);
             _unitOfWork.Campaigns.Create(campaign);
+
             if (_unitOfWork.SaveChanges())
             {
                 return true;
@@ -49,8 +50,9 @@ namespace GymManagement.Application.Services
             }
 
             var vmModel  = _mapper.Map<Campaign>(model);
+            vmModel.Id = id;
             _unitOfWork.Campaigns.Update(vmModel);
-
+           
             if (_unitOfWork.SaveChanges())
             {
                 return true;

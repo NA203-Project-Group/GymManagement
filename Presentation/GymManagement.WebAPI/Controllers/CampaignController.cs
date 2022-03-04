@@ -1,10 +1,10 @@
 ﻿using GymManagement.Application.Interfaces.ServiceInterfaces;
+using GymManagement.Application.ViewModels.CampaignViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagement.WebAPI.Controllers
 {
-    //http://localhost:5000/api/campaign
-    [Route("api/[controller]")]
+    [Route("api/[controller]s")]
     [ApiController]
     public class CampaignController : ControllerBase
     {
@@ -14,7 +14,7 @@ namespace GymManagement.WebAPI.Controllers
         {
             _campaignService = campaignService;
         }
-
+        //http://localhost:5000/api/campaigns
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -22,8 +22,42 @@ namespace GymManagement.WebAPI.Controllers
             return Ok(result);
         }
 
+        //http://localhost:5000/api/campaigns/10
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            return Ok( _campaignService.GetById(id));
+        }
 
+        [HttpPost]
+        public IActionResult Create([FromBody] CampaignCommandViewModel model)
+        {
+            var result = _campaignService.Create(model);
+            if (result)
+            {
+                return Ok();
+            }
 
+            return BadRequest();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update([FromBody] CampaignCommandViewModel model,int id)
+        {
+            var result = _campaignService.Update(model, id);
+            return result ? Ok() : BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var result = _campaignService.Delete(id);
+            if (result)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }
 
