@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using System.Collections.Generic;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
-using GymManagement.Application.ViewModels.CampaignViewModel;
 using GymManagement.Domain.Entities;
 
 namespace GymManagement.Application.Services
