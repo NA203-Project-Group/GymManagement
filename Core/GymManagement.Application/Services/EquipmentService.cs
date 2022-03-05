@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
 using GymManagement.Application.ViewModels.EquipmentViewModel;
@@ -46,10 +47,7 @@ namespace GymManagement.Application.Services
             var equipment =  _mapper.Map<Equipment>(model);
             var getByEquipment = _unitOfWork.Equipments.GetById(id);
 
-            if (getByEquipment is null)
-            {
-                throw new InvalidOperationException("Equipment not found");
-            }
+            getByEquipment.IfIsNullThrowNotFoundException("Equipment", id);
 
             equipment.MaintenancePeriod = equipment.CreatedDate.AddMonths(model.Duration);
             equipment.Id = id;
@@ -66,7 +64,7 @@ namespace GymManagement.Application.Services
         public bool Delete(int id)
         {
             var equipment = _unitOfWork.Equipments.GetById(id);
-
+            equipment.IfIsNullThrowNotFoundException("Equipment", id);
             equipment.IsDeleted = true;
             _unitOfWork.Equipments.Update(equipment);
             if (_unitOfWork.SaveChanges())

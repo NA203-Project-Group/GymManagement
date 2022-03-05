@@ -13,8 +13,4 @@
     <ProjectReference Include="..\GymManagement.Domain\GymManagement.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModels\TrainerViewModel\" />
-  </ItemGroup>
-
 </Project>
