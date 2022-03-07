@@ -4,7 +4,6 @@ using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
 using GymManagement.Application.ViewModels.TrainerViewModel;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace GymManagement.Application.Services
 {
