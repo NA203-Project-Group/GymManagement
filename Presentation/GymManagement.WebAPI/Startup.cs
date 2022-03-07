@@ -32,6 +32,7 @@ namespace GymManagement.WebAPI
             services.AddScoped<IExerciseProgramService, ExerciseProgramService>();
             services.AddScoped<ITrainerService, TrainerService>();
             services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GymManagement.WebAPI", Version = "v1" });
@@ -50,6 +51,8 @@ namespace GymManagement.WebAPI
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

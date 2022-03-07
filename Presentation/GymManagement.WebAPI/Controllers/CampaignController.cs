@@ -1,5 +1,6 @@
 ﻿using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.ViewModels.CampaignViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagement.WebAPI.Controllers
@@ -14,7 +15,8 @@ namespace GymManagement.WebAPI.Controllers
         {
             _campaignService = campaignService;
         }
-        //http://localhost:5000/api/campaigns
+
+        [Authorize(Roles = "Member")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -22,7 +24,7 @@ namespace GymManagement.WebAPI.Controllers
             return Ok(result);
         }
 
-        //http://localhost:5000/api/campaigns/10
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {

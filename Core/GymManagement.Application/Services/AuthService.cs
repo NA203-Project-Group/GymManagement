@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
@@ -15,12 +16,16 @@ namespace GymManagement.Application.Services
         private readonly UserManager<Member> _userManager;
         private readonly SignInManager<Member> _signInManager;
         private readonly IMapper _mapper;
+        private readonly TokenGenerator _tokenGenerator;
+        private readonly RoleGenerator _roleGenerator;
 
-        public AuthService(IMapper mapper, UserManager<Member> userManager, SignInManager<Member> signInManager)
+        public AuthService(IMapper mapper, UserManager<Member> userManager, SignInManager<Member> signInManager, TokenGenerator tokenGenerator, RoleGenerator roleGenerator)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenGenerator = tokenGenerator;
+            _roleGenerator = roleGenerator;
         }
 
         public async Task<bool> Register(MemberRegisterViewModel registerViewModel)
@@ -34,8 +39,8 @@ namespace GymManagement.Application.Services
 
              var result = await _userManager.CreateAsync(member, registerViewModel.Password);
 
-
-             //Role Create eklenecek....
+             _roleGenerator.CreateRoles();
+             
              if (result.Succeeded)
              {
                  await _userManager.AddToRoleAsync(member, "Member");
@@ -62,9 +67,8 @@ namespace GymManagement.Application.Services
 
             var userRoles = await _userManager.GetRolesAsync(memberFind);
 
-             //var Token = _tokenGenerator.CreteToken(memberFind, userRoles);
-             return null;
-
+            var token = _tokenGenerator.CreateToken(memberFind, userRoles.ToList());
+            return token;
         }
     }
 }
