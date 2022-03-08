@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AutoMapper;
+using FluentValidation;
 using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
+using GymManagement.Application.Validations;
 using GymManagement.Application.ViewModels.CampaignViewModel;
 using GymManagement.Domain.Entities;
 
@@ -33,19 +34,24 @@ namespace GymManagement.Application.Services
 
         public bool Create(CampaignCommandViewModel model)
         {
+
+            var validator = new CampaignValidator();
+            
+            validator.ValidateAndThrow(model);
+
             var campaign = _mapper.Map<Campaign>(model);
             _unitOfWork.Campaigns.Create(campaign);
 
-            if (_unitOfWork.SaveChanges())
-            {
-                return true;
-            }
-            return false;
+            return _unitOfWork.SaveChanges();
         }
         public bool Update(CampaignCommandViewModel model,int id)
         {
+
+            var validator = new CampaignValidator();
+            validator.ValidateAndThrow(model);
+
             var campaign =  _unitOfWork.Campaigns.GetById(id);
-            
+
             campaign.IfIsNullThrowNotFoundException("Campaign",id);
 
             var vmModel  = _mapper.Map<Campaign>(model);

@@ -1,6 +1,8 @@
-﻿using GymManagement.Application.Extensions;
+﻿using FluentValidation;
+using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
+using GymManagement.Application.Validations;
 using GymManagement.Domain.Entities;
 
 namespace GymManagement.Application.Services
@@ -19,17 +21,19 @@ namespace GymManagement.Application.Services
 
         public bool Create(EmployeeDetail model)
         {
-            _unitOfWork.EmployeeDetails.Create(model);
-            if (_unitOfWork.SaveChanges())
-            {
-                return true;
-            }
+            var validator = new EmployeeDetailValidator();
+            validator.ValidateAndThrow(model);
 
-            return false;
+            _unitOfWork.EmployeeDetails.Create(model);
+
+            return _unitOfWork.SaveChanges();
         }
 
         public bool Update(EmployeeDetail model, int id)
         {
+            var validator = new EmployeeDetailValidator();
+            validator.ValidateAndThrow(model);
+
             var employeeDetail =  _unitOfWork.EmployeeDetails.GetById(id);
             employeeDetail.IfIsNullThrowNotFoundException("Employee Detail", id);
 

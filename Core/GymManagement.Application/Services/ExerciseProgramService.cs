@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AutoMapper;
+using FluentValidation;
 using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
+using GymManagement.Application.Validations;
 using GymManagement.Application.ViewModels.ExerciseProgramViewModel;
 using GymManagement.Domain.Entities;
 
@@ -30,6 +31,9 @@ namespace GymManagement.Application.Services
 
         public bool Create(ExerciseProgramCommandViewModel model)
         {
+            var validator = new ExerciseProgramValidator();
+            validator.ValidateAndThrow(model);
+
             var exerciseProgram = _mapper.Map<ExerciseProgram>(model);
 
             _unitOfWork.ExercisePrograms.Create(exerciseProgram);
@@ -39,6 +43,10 @@ namespace GymManagement.Application.Services
 
         public bool Update(ExerciseProgramCommandViewModel model, int id)
         {
+
+            var validator = new ExerciseProgramValidator();
+            validator.ValidateAndThrow(model);
+
             var getExerciseProgram = _unitOfWork.ExercisePrograms.GetById(id);
 
             getExerciseProgram.IfIsNullThrowNotFoundException("Exerciese Program", id);

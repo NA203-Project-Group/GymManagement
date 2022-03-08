@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AutoMapper;
+using FluentValidation;
 using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
+using GymManagement.Application.Validations;
 using GymManagement.Application.ViewModels.EquipmentViewModel;
 using GymManagement.Domain.Entities;
 
@@ -28,22 +29,24 @@ namespace GymManagement.Application.Services
 
         public bool Create(EquipmentCommandViewModel model)
         {
+            var validator = new EquipmentValidator();
+            validator.ValidateAndThrow(model);
 
             var equipment = _mapper.Map<Equipment>(model);
 
             equipment.MaintenancePeriod = equipment.CreatedDate.AddMonths(model.Duration);
 
             _unitOfWork.Equipments.Create(equipment);
-            if (_unitOfWork.SaveChanges())
-            {
-                return true;
-            }
-            return false;
 
+            return _unitOfWork.SaveChanges();
         }
 
         public bool Update(EquipmentCommandViewModel model, int id)
         {
+
+            var validator = new EquipmentValidator();
+            validator.ValidateAndThrow(model);
+
             var equipment =  _mapper.Map<Equipment>(model);
             var getByEquipment = _unitOfWork.Equipments.GetById(id);
 
@@ -53,12 +56,7 @@ namespace GymManagement.Application.Services
             equipment.Id = id;
             _unitOfWork.Equipments.Update(equipment);
 
-            if (_unitOfWork.SaveChanges())
-            {
-                return true;
-            }
-            return false;
-
+            return _unitOfWork.SaveChanges();
         }
 
         public bool Delete(int id)
@@ -67,11 +65,8 @@ namespace GymManagement.Application.Services
             equipment.IfIsNullThrowNotFoundException("Equipment", id);
             equipment.IsDeleted = true;
             _unitOfWork.Equipments.Update(equipment);
-            if (_unitOfWork.SaveChanges())
-            {
-                return true;
-            }
-            return false;
+
+            return _unitOfWork.SaveChanges();
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using FluentValidation;
 using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
+using GymManagement.Application.Validations;
 using GymManagement.Application.ViewModels.TrainerViewModel;
 using GymManagement.Domain.Entities;
 
@@ -18,6 +20,10 @@ namespace GymManagement.Application.Services
         }
         public bool CreateTrainer(TrainerCommandViewModel model)
         {
+
+            var validator = new TrainerValidator();
+            validator.ValidateAndThrow(model);
+
             _unitOfWork.EmployeeDetails.Create(model.EmployeeDetail);
             _unitOfWork.WorkerContracts.Create(model.WorkerContract);
             _unitOfWork.SaveChanges();

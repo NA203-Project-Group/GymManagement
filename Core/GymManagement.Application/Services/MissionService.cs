@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using FluentValidation;
 using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
+using GymManagement.Application.Validations;
 using GymManagement.Application.ViewModels.MissionViewModel;
 using GymManagement.Domain.Entities;
 
@@ -40,6 +42,9 @@ namespace GymManagement.Application.Services
 
         public bool Create(MissionCommandViewModel model)
         {
+            var validator = new MissionValidator();
+            validator.ValidateAndThrow(model);
+
             var mission = _mapper.Map<Mission>(model);
             _unitOfWork.Missions.Create(mission);
 
@@ -48,12 +53,17 @@ namespace GymManagement.Application.Services
 
         public bool Update(MissionCommandViewModel model, int id)
         {
+
+            var validator = new MissionValidator();
+            validator.ValidateAndThrow(model);
+
             var mission = _unitOfWork.Missions.GetById(id);
 
             mission.IfIsNullThrowNotFoundException("Trainer", id);
 
             var vmModel = _mapper.Map<Mission>(model);
             vmModel.Id = id;
+
             _unitOfWork.Missions.Update(vmModel);
 
             return _unitOfWork.SaveChanges();
