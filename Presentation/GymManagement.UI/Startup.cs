@@ -7,6 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GymManagement.Application.DependencyContainers;
+using GymManagement.Application.Interfaces.ServiceInterfaces;
+using GymManagement.Application.Services;
+using GymManagement.Infrastructure.DependencyContainers;
 
 namespace GymManagement.UI
 {
@@ -23,6 +27,14 @@ namespace GymManagement.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddApplicationServices();
+            services.AddInfrastructureServices(Configuration);
+            services.AddScoped<ICampaignService, CampaignService>();
+            services.AddScoped<IEquipmentService, EquipmentService>();
+            services.AddScoped<IExerciseProgramService, ExerciseProgramService>();
+            services.AddScoped<ITrainerService, TrainerService>();
+            services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Linq;
+using GymManagement.Application.Interfaces.ServiceInterfaces;
 
 
 namespace GymManagement.UI.Controllers
@@ -9,15 +11,19 @@ namespace GymManagement.UI.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICampaignService _campaignService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICampaignService campaignService)
         {
             _logger = logger;
+            _campaignService = campaignService;
         }
 
         public IActionResult Index()
         {
-            return View();
+           var campaigns =  _campaignService.GetAll();
+           
+            return View(campaigns);
         }
 
         public IActionResult Privacy()
