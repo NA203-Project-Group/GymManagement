@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using FluentValidation;
+﻿using FluentValidation;
+using System.Collections.Generic;
 using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
