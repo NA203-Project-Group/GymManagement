@@ -26,7 +26,7 @@ namespace GymManagement.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddApplicationServices();
             services.AddInfrastructureServices(Configuration);
             services.AddScoped<ICampaignService, CampaignService>();
@@ -35,6 +35,7 @@ namespace GymManagement.UI
             services.AddScoped<ITrainerService, TrainerService>();
             services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<IAuthService, AuthService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
