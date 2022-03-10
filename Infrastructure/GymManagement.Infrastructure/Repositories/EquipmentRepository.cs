@@ -4,7 +4,6 @@ using GymManagement.Domain.Entities;
 using GymManagement.Infrastructure.Contexts;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace GymManagement.Infrastructure.Repositories
 {
@@ -16,9 +15,18 @@ namespace GymManagement.Infrastructure.Repositories
             _context = context;
         }
 
-        public List<Equipment> GetEquipmentsWithTrainer()
+        public List<EquipmentQueryViewModel> GetEquipmentsWithTrainer()
         {
-            return _context.Equipments.Include(e => e.Trainer).ToList();
+            var result = _context.Equipments.Select( equipment=> 
+                new EquipmentQueryViewModel {
+                    TrainerName = equipment.Trainer.EmployeeDetail.FirstName+" "+equipment.Trainer.EmployeeDetail.LastName,
+                    Name = equipment.Name,
+                    IsActive = equipment.IsActive,
+                    MaintenancePeriod = equipment.MaintenancePeriod
+
+                });
+
+            return result.OrderByDescending(x => x.MaintenancePeriod).ToList();
         }
     }
 }

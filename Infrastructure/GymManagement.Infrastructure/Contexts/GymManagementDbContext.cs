@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GymManagement.Application.ViewModels.TrainerViewModel;
+using Microsoft.EntityFrameworkCore;
 using GymManagement.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -19,5 +20,6 @@ namespace GymManagement.Infrastructure.Contexts
         public DbSet<Mission> Missions { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<WorkerContract> WorkerContracts { get; set; }
+        public DbSet<Member> Members { get; set; }
     }
 }

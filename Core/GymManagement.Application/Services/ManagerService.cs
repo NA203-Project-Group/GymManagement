@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using GymManagement.Application.Extensions;
@@ -23,6 +24,12 @@ namespace GymManagement.Application.Services
 
             var validator = new TrainerValidator();
             validator.ValidateAndThrow(model);
+
+            model.EmployeeDetail.PaymentDate = DateTime.Now;
+            model.WorkerContract.CreatedDate = DateTime.Now;
+            model.WorkerContract.EndDate = model.WorkerContract.CreatedDate.AddMonths(model.WorkerContract.Duration);
+            model.WorkerContract.IsActive = true;
+            model.WorkerContract.UpdateDate = DateTime.Now;
 
             _unitOfWork.EmployeeDetails.Create(model.EmployeeDetail);
             _unitOfWork.WorkerContracts.Create(model.WorkerContract);
@@ -52,6 +59,11 @@ namespace GymManagement.Application.Services
         {
             _unitOfWork.Managers.AddMissionToTrainer(missionId, trainerId);
             return true;
+        }
+
+        public List<Member> GetAll()
+        {
+            return _unitOfWork.Managers.GetAllMembers();
         }
     }
 }

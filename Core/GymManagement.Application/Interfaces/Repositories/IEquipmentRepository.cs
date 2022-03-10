@@ -6,6 +6,6 @@ namespace GymManagement.Application.Interfaces.Repositories
 {
     public interface IEquipmentRepository : IRepositoryBase<Equipment>
     {
-        public List<Equipment> GetEquipmentsWithTrainer();
+        public List<EquipmentQueryViewModel> GetEquipmentsWithTrainer();
     }
 }

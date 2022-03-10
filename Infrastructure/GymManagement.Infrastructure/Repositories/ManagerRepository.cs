@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using GymManagement.Application.Interfaces.Repositories;
 using GymManagement.Domain.Entities;
 using GymManagement.Infrastructure.Contexts;
@@ -23,6 +24,11 @@ namespace GymManagement.Infrastructure.Repositories
 
             trainer.Missions.Add(mission);
             return _context.SaveChanges() > 0;
+        }
+
+        public List<Member> GetAllMembers()
+        {
+            return _context.Members.ToList();
         }
     }
 }

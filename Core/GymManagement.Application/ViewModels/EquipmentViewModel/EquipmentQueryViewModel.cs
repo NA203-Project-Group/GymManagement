@@ -8,6 +8,6 @@ namespace GymManagement.Application.ViewModels.EquipmentViewModel
         public string Name { get; set; }
         public DateTime MaintenancePeriod { get; set; }
         public bool IsActive { get; set; }
-        public Trainer Trainer { get; set; }
+        public string TrainerName { get; set; }
     }
 }

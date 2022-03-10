@@ -23,6 +23,7 @@ namespace GymManagement.Infrastructure.Repositories
                 FirstName = trainer.EmployeeDetail.FirstName,
                 LastName = trainer.EmployeeDetail.LastName,
                 Salary = trainer.EmployeeDetail.Salary,
+                CreatedDate = trainer.CreatedDate,
                 WorkerContractIsActive = trainer.WorkerContract.IsActive
             });
 

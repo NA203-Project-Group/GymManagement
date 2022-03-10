@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using GymManagement.Application.DependencyContainers;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Services;
@@ -29,12 +26,17 @@ namespace GymManagement.UI
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddApplicationServices();
             services.AddInfrastructureServices(Configuration);
+
             services.AddScoped<ICampaignService, CampaignService>();
             services.AddScoped<IEquipmentService, EquipmentService>();
             services.AddScoped<IExerciseProgramService, ExerciseProgramService>();
             services.AddScoped<ITrainerService, TrainerService>();
             services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IMissionService, MissionService>();
+
+            services.AddBlazoredLocalStorage();
+
 
         }
 
@@ -52,6 +54,8 @@ namespace GymManagement.UI
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

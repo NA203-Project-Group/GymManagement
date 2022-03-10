@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace GymManagement.Application.ViewModels.TrainerViewModel
 {
     public class TrainerQueryViewModel
@@ -7,6 +8,7 @@ namespace GymManagement.Application.ViewModels.TrainerViewModel
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public double Salary { get; set; }
+        public DateTime CreatedDate { get; set; }
         public bool WorkerContractIsActive { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using GymManagement.Domain.Entities;
+﻿using System;
+using GymManagement.Domain.Entities;
 
 namespace GymManagement.Application.ViewModels.TrainerViewModel
 {
