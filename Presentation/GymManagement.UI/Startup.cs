@@ -7,7 +7,11 @@ using Blazored.LocalStorage;
 using GymManagement.Application.DependencyContainers;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Services;
+using GymManagement.Domain.Entities;
+using GymManagement.Infrastructure.Contexts;
 using GymManagement.Infrastructure.DependencyContainers;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 
 namespace GymManagement.UI
 {
@@ -26,13 +30,23 @@ namespace GymManagement.UI
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddApplicationServices();
             services.AddInfrastructureServices(Configuration);
+            services.AddScoped<IMemberService, MemberService>();
+
+            services.AddAuthentication(
+                CookieAuthenticationDefaults.AuthenticationScheme
+            ).AddCookie(x =>
+                {
+                    x.LoginPath = "/Admin/Login";
+                }
+
+            );
+
 
             services.AddScoped<ICampaignService, CampaignService>();
             services.AddScoped<IEquipmentService, EquipmentService>();
             services.AddScoped<IExerciseProgramService, ExerciseProgramService>();
             services.AddScoped<ITrainerService, TrainerService>();
             services.AddScoped<IManagerService, ManagerService>();
-            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IMissionService, MissionService>();
 
             services.AddBlazoredLocalStorage();

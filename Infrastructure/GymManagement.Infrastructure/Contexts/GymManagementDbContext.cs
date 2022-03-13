@@ -1,5 +1,4 @@
-﻿using GymManagement.Application.ViewModels.TrainerViewModel;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using GymManagement.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -10,7 +9,6 @@ namespace GymManagement.Infrastructure.Contexts
         public GymManagementDbContext(DbContextOptions<GymManagementDbContext> options) 
             :base(options)
         {
-
         }
         public DbSet<Campaign> Campaigns { get; set; }
         public DbSet<EmployeeDetail> EmployeeDetails { get; set; }

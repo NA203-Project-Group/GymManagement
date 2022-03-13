@@ -1,13 +1,21 @@
+using System.Text;
 using GymManagement.Application.DependencyContainers;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
+using GymManagement.Application.Jwt;
 using GymManagement.Application.Services;
+using GymManagement.Domain.Entities;
+using GymManagement.Infrastructure.Contexts;
 using GymManagement.Infrastructure.DependencyContainers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ScottBrady91.AspNetCore.Identity;
 
 namespace GymManagement.WebAPI
 {
@@ -33,6 +41,32 @@ namespace GymManagement.WebAPI
             services.AddScoped<ITrainerService, TrainerService>();
             services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IMemberService, MemberService>();
+            services.AddScoped<TokenGenerator>();
+            services.AddScoped<RoleGenerator>();
+
+            services.AddIdentity<Member, IdentityRole>()
+                .AddEntityFrameworkStores<GymManagementDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    ValidateIssuer = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey
+                        (Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+            });
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GymManagement.WebAPI", Version = "v1" });

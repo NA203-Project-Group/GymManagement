@@ -10,5 +10,7 @@ namespace GymManagement.Domain.Entities
         public bool IsPaymentStatus { get; set; }
         public int? ExerciseProgramId { get; set; }
         public int? CampaignId { get; set; }
+        public byte[] PasswordSaltMvc { get; set; }
+        public byte[] PasswordHashtMvc { get; set; }
     }
 }

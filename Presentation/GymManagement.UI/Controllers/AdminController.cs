@@ -1,39 +1,54 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.ViewModels.MemberViewModel;
 using GymManagement.Application.ViewModels.TrainerViewModel;
+using GymManagement.Domain.Entities;
 using GymManagement.UI.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagement.UI.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IAuthService _authService;
         private readonly IManagerService _managerService;
         private readonly ITrainerService _trainerService;
         private readonly IMissionService _missionService;
         private readonly IEquipmentService _equipmentService;
+        private readonly IMemberService _memberService;
 
-        public AdminController(IAuthService authService, IManagerService managerService, ITrainerService trainerService, IMissionService missionService, IEquipmentService equipmentService)
+        public AdminController( IManagerService managerService, ITrainerService trainerService, IMissionService missionService, IEquipmentService equipmentService, IMemberService memberService)
         {
-            _authService = authService;
+            
             _managerService = managerService;
             _trainerService = trainerService;
             _missionService = missionService;
             _equipmentService = equipmentService;
+            _memberService = memberService;
         }
 
         [HttpPost]
-        public IActionResult Login(MemberLoginViewModel model)
+        public async Task<IActionResult> Login(MemberLoginViewModel model)
         {
-            var token = _authService.Login(model);
-            if (token is null)
+            if (_memberService.Login(model))
             {
-                return NotFound();
-            }
+                var claims = new List<Claim>
+                {
 
-            return RedirectToAction("Dashboard");
+                    new Claim(ClaimTypes.Email,model.Email)
+                };
+                var userIdentity = new ClaimsIdentity(claims, "Login");
+                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                await HttpContext.SignInAsync(principal);
+
+                return RedirectToAction("Dashboard");
+            }
+            return NotFound();
         }
 
         [HttpGet]
@@ -57,6 +72,8 @@ namespace GymManagement.UI.Controllers
             var members = _managerService.GetAll();
             return View(members);
         }
+
+        [Authorize]
         public IActionResult Trainers()
         {
             var trainers = _trainerService.GetTrainersWithEmployeeDetail();
@@ -99,6 +116,5 @@ namespace GymManagement.UI.Controllers
 
             return View(equipments);
         }
-
     }
 }

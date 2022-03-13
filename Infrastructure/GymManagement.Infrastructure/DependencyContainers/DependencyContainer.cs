@@ -29,32 +29,8 @@ namespace GymManagement.Infrastructure.DependencyContainers
             services.AddScoped<IMissionRepository, MissionRepository>();
             services.AddScoped<ITrainerRepository, TrainerRepository>();
             services.AddScoped<IWorkerContractRepository, WorkerContractRepository>();
+            services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            services.AddIdentity<Member, IdentityRole>()
-                .AddEntityFrameworkStores<GymManagementDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = true,
-                    ValidAudience = configuration["Jwt:Audience"],
-                    ValidateIssuer = true,
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey
-                        (Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
-                };
-            });
-
-
         }
     }
 }
