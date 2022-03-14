@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
-using GymManagement.Application.Extensions;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.Interfaces.UnitOfWorks;
 using GymManagement.Application.Validations;

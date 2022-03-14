@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GymManagement.Application.Interfaces.ServiceInterfaces;
 using GymManagement.Application.ViewModels.MemberViewModel;
 using GymManagement.Application.ViewModels.TrainerViewModel;
-using GymManagement.Domain.Entities;
 using GymManagement.UI.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
